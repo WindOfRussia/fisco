@@ -1,6 +1,5 @@
 library fisco_app.globals;
 
-var receipts = [];
 var lastWeekDataSet = [
   LastWeekCategoryVsExpense("Groceries", 100.00),
   LastWeekCategoryVsExpense("Restaurants", 50.00),

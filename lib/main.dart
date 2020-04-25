@@ -5,6 +5,7 @@ import 'screens/analysis_page.dart';
 import 'screens/manage_receipts_page.dart';
 import 'screens/new_receipt_page.dart';
 import 'screens/edit_receipt_page.dart';
+import 'screens/display_picture_screen.dart';
 
 //Main method for all Flutter Applications
 void main() {
@@ -34,6 +35,9 @@ class Fisco extends StatelessWidget {
         '/new': (context) => NewReceiptPage(),
         '/manage': (context) => ManageReceiptsPage(),
         '/edit': (context) => EditReceiptPage(),
+        '/picture': (context) => DisplayPictureScreen(
+            image: ModalRoute.of(context).settings.arguments
+        ),
       },
       debugShowCheckedModeBanner: false,
     );
