@@ -3,12 +3,7 @@ import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 import 'widgets/buttons/CameraButton.dart';
 
-class ManageReceiptsPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _ManageReceiptsPageState();
-}
-/// This is a widget to create a new receipt
-class _ManageReceiptsPageState extends State<ManageReceiptsPage> {
+class ManageReceiptsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     {

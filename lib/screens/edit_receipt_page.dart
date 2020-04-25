@@ -2,12 +2,7 @@
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 
-class EditReceiptPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _EditReceiptPageState();
-}
-/// This is a widget to create a new receipt
-class _EditReceiptPageState extends State<EditReceiptPage> {
+class EditReceiptPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     {
