@@ -28,10 +28,17 @@ class CameraButton extends StatelessWidget {
               ),
             );
   }
-  Future<void> openGallery() async {
-    var gallery = await ImagePicker.pickImage(
+  Future<void> openGallery(context) async {
+    var picture = await ImagePicker.pickImage(
       source: ImageSource.gallery,
     );
+
+    Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DisplayPictureScreen(image: picture),
+              ),
+            );
   }
 
   Future<void> _optionsDialogBox(context) {
@@ -52,7 +59,9 @@ class CameraButton extends StatelessWidget {
                 ),
                 GestureDetector(
                   child: new Text('Select from gallery'),
-                  onTap: openGallery,
+                  onTap: () => {
+                    openGallery(context)
+                  },
                 ),
               ],
             ),
