@@ -1,5 +1,8 @@
+import 'package:fiscoapp/screens/edit_receipt_page.dart';
+import 'package:fiscoapp/screens/manage_receipts_page.dart';
 import 'package:flutter/material.dart';
 import 'screens/analysis_page.dart';
+import 'screens/new_receipt_page.dart';
 
 //Main method for all Flutter Applications
 void main() => runApp(MyApp());
@@ -12,9 +15,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+        primarySwatch: Colors.teal,
       ),
-      home: AnalysisPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => AnalysisPage(),
+        '/new': (context) => NewReceiptPage(),
+        '/manage': (context) => ManageReceiptsPage(),
+        '/edit': (context) => EditReceiptPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
