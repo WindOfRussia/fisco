@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
+import 'widgets/buttons/CameraButton.dart';
 
 class AnalysisPage extends StatefulWidget {
   @override
@@ -15,9 +16,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     {
       return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.indigo,
-          child: const Icon(Icons.camera_alt), onPressed: () {},),
+        floatingActionButton: CameraButton(),
         bottomNavigationBar: BottomAppBar(
           color: Colors.teal,
           shape: CircularNotchedRectangle(),
