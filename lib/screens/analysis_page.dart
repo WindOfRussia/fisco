@@ -14,9 +14,28 @@ class _AnalysisPageState extends State<AnalysisPage> {
   Widget build(BuildContext context) {
     {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Fisco App'),
-          centerTitle: true,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.indigo,
+          child: const Icon(Icons.camera_alt), onPressed: () {},),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.teal,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 4.0,
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(icon: Icon(Icons.more_horiz), onPressed: () {
+                  Navigator.pushNamed(context, '/manage');
+                },
+              ),
+              IconButton(icon: Icon(Icons.add), onPressed: () {
+                  Navigator.pushNamed(context, '/new');
+                },
+              ),
+            ],
+          ),
         ),
         body: Center(
           child: Column(
