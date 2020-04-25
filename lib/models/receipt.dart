@@ -27,7 +27,13 @@ class Receipt {
     this.items
   });
 
-  factory Receipt.fromFile(File picture, category, date, tps, tvp, total, items) {
+  factory Receipt.fromFile(
+      File picture,
+      {category, date, tps, tvp, total, items}
+    )
+  {
+    //TODO: RUN OCR & PARSE IMAGE INTO RECEIPT HERE
+
     return new Receipt(
         category: category,
         date: date,
