@@ -1,2 +1,2 @@
-# fisco
-Manage your receipts with ease
+# Fisco
+Concordia SOEN357 project
