@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
+import '../widgets/fisco_bottom_bar.dart';
 
 class NewReceiptPage extends StatefulWidget {
   @override
@@ -16,20 +16,12 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.indigo,
           child: const Icon(Icons.check), onPressed: () {},),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.teal,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 4.0,
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
+        bottomNavigationBar: FiscoBottomBar(
+          children: <Widget>[
+            IconButton(icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context)
+            ),
+          ],
         ),
         body: Center(
           child: Column(

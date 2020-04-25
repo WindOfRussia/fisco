@@ -1,7 +1,8 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
-import 'widgets/buttons/CameraButton.dart';
+import '../widgets/fisco_bottom_bar.dart';
+import '../widgets/buttons/camera_button.dart';
 
 class AnalysisPage extends StatefulWidget {
   @override
@@ -17,24 +18,15 @@ class _AnalysisPageState extends State<AnalysisPage> {
       return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: CameraButton(),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.teal,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 4.0,
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(icon: Icon(Icons.more_horiz), onPressed: () {
-                  Navigator.pushNamed(context, '/manage');
-                },
-              ),
-              IconButton(icon: Icon(Icons.add), onPressed: () {
-                  Navigator.pushNamed(context, '/new');
-                },
-              ),
-            ],
-          ),
+        bottomNavigationBar: FiscoBottomBar(
+          children: [
+            IconButton(icon: Icon(Icons.more_horiz),
+              onPressed: () => Navigator.pushNamed(context, '/manage')
+            ),
+            IconButton(icon: Icon(Icons.add),
+              onPressed: () => Navigator.pushNamed(context, '/new')
+            ),
+          ],
         ),
         body: Center(
           child: Column(
