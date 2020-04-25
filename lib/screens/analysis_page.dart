@@ -61,7 +61,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                   height: 200,
                   child:
                   charts.PieChart(
-                    _createPieChartData(globals.lastWeekDataSet),
+                    _createPieChartData(lastWeekDataSet),
                     animate: true,
                     behaviors: [
                       new charts.DatumLegend(position: charts.BehaviorPosition.end)
@@ -73,7 +73,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                   height: 200,
                   child:
                   charts.BarChart(
-                    _createBarChartData(globals.lastWeekDataSet),
+                    _createBarChartData(lastWeekDataSet),
                     animate: true,
                   ),
                 )
@@ -84,7 +84,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                   height: 200,
                   child:
                   charts.PieChart(
-                    _createPieChartData(globals.lastMonthDataSet),
+                    _createPieChartData(lastMonthDataSet),
                     animate: true,
                     behaviors: [
                       new charts.DatumLegend(position: charts.BehaviorPosition.end)
@@ -96,7 +96,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                   height: 200,
                   child:
                   charts.BarChart(
-                    _createBarChartData(globals.lastMonthDataSet),
+                    _createBarChartData(lastMonthDataSet),
                     animate: true,
                   ),
                 )
@@ -108,46 +108,71 @@ class _AnalysisPageState extends State<AnalysisPage> {
     }
   }
 
-  static List<charts.Series<globals.LastWeekCategoryVsExpense, String>>
-  _createBarChartData(List<globals.LastWeekCategoryVsExpense> dataSet) {
-    var data = new List<globals.LastWeekCategoryVsExpense>.from(dataSet);
+  static List<charts.Series<LastWeekCategoryVsExpense, String>>
+  _createBarChartData(List<LastWeekCategoryVsExpense> dataSet) {
+    var data = new List<LastWeekCategoryVsExpense>.from(dataSet);
     return [
-      charts.Series<globals.LastWeekCategoryVsExpense, String>(
+      charts.Series<LastWeekCategoryVsExpense, String>(
         id: 'LastWeekBarChart',
         colorFn: (_, __) => charts.MaterialPalette.indigo.shadeDefault,
-        domainFn: (globals.LastWeekCategoryVsExpense dataPoint, _) =>
+        domainFn: (LastWeekCategoryVsExpense dataPoint, _) =>
         dataPoint.category,
-        measureFn: (globals.LastWeekCategoryVsExpense dataPoint, _) =>
+        measureFn: (LastWeekCategoryVsExpense dataPoint, _) =>
         dataPoint.expense,
         data: data,
         // Set a label accessor to control the text of the arc label.
-        labelAccessorFn: (globals.LastWeekCategoryVsExpense row, _) => '${row.category}',
+        labelAccessorFn: (LastWeekCategoryVsExpense row, _) => '${row.category}',
       )
     ];
   }
-  static List<charts.Series<globals.LastWeekCategoryVsExpense, String>>
-  _createPieChartData(List<globals.LastWeekCategoryVsExpense> dataSet) {
-    var data = new List<globals.LastWeekCategoryVsExpense>.from(dataSet);
+  static List<charts.Series<LastWeekCategoryVsExpense, String>>
+  _createPieChartData(List<LastWeekCategoryVsExpense> dataSet) {
+    var data = new List<LastWeekCategoryVsExpense>.from(dataSet);
     // Sort data automatically by ascending order
     data.sort((a, b) => a.expense.compareTo(b.expense));
     int dataSize = data.length+1;
     int startingColorIndex = data.length-1;
 
     return [
-      charts.Series<globals.LastWeekCategoryVsExpense, String>(
+      charts.Series<LastWeekCategoryVsExpense, String>(
         id: 'LastWeekBarChart',
         colorFn: (_, index) {
 
           return charts.MaterialPalette.indigo.makeShades(dataSize)[startingColorIndex-index];
         },
-        domainFn: (globals.LastWeekCategoryVsExpense dataPoint, _) =>
+        domainFn: (LastWeekCategoryVsExpense dataPoint, _) =>
         dataPoint.category,
-        measureFn: (globals.LastWeekCategoryVsExpense dataPoint, _) =>
+        measureFn: (LastWeekCategoryVsExpense dataPoint, _) =>
         dataPoint.expense,
         data: data,
         // Set a label accessor to control the text of the arc label.
-        labelAccessorFn: (globals.LastWeekCategoryVsExpense row, _) => '${row.category}',
+        labelAccessorFn: (LastWeekCategoryVsExpense row, _) => '${row.category}',
       )
     ];
   }
+  static List<LastWeekCategoryVsExpense> _createLastMonthDataSet(DateTime date) {
+    var firstDayOfLastWeek = date.subtract(new Duration(days: date.weekday + 7));
+    while ()
+  }
+}
+
+var lastWeekDataSet = [
+  LastWeekCategoryVsExpense("Groceries", 100.00),
+  LastWeekCategoryVsExpense("Restaurants", 50.00),
+  LastWeekCategoryVsExpense("Clothes", 150.00),
+  LastWeekCategoryVsExpense("Others", 200.00),
+];
+
+var lastMonthDataSet = [
+  LastWeekCategoryVsExpense("Groceries", 300.00),
+  LastWeekCategoryVsExpense("Restaurants", 300.00),
+  LastWeekCategoryVsExpense("Clothes", 250.00),
+  LastWeekCategoryVsExpense("Others", 500.00),
+];
+
+class LastWeekCategoryVsExpense {
+  final String category;
+  final double expense;
+
+  LastWeekCategoryVsExpense(this.category, this.expense);
 }
