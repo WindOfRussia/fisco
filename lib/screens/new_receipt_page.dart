@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 import '../widgets/fisco_bottom_bar.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import '../models/line_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
