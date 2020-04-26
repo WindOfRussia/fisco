@@ -32,6 +32,8 @@ dependencies:
   google_fonts: ^0.4.0
   provider: ^4.0.2
   tesseract_ocr: ^0.3.0
+  shared_preferences: ^0.5.7
+  enum_to_string: ^1.0.9
 
 dev_dependencies:
   flutter_test:
