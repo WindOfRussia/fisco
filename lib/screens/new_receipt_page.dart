@@ -68,7 +68,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "New Item",
+                                      "New Receipt",
                                       style: TextStyle(
                                         fontSize: 40.0,
                                         fontWeight: FontWeight.bold,
