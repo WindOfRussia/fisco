@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'providers/receipts_provider.dart';
 import 'providers/ocr_provider.dart';
 import 'screens/analysis_page.dart';
+import 'screens/intro_slider_screen.dart';
 import 'screens/manage_receipts_page.dart';
 import 'screens/new_receipt_page.dart';
 import 'screens/edit_receipt_page.dart';
@@ -33,9 +34,9 @@ class Fisco extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      initialRoute: '/',
+      initialRoute: '/intro',
       routes: {
-        '/': (context) => AnalysisPage(),
+        '/intro': (context) => IntroScreen(),
         '/new': (context) => NewReceiptPage(),
         '/manage': (context) => ManageReceiptsPage(),
         '/edit': (context) => EditReceiptPage(),

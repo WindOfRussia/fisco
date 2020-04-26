@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:developer';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   @override
   Widget build(BuildContext context) {
     {
-
+    log('intro');
       return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: CameraButton(),
