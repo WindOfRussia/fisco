@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 import '../widgets/fisco_bottom_bar.dart';
 import '../models/line_item.dart';
-import 'package:flutter/material.dart';
+import '../models/receipt.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
@@ -12,17 +12,22 @@ class NewReceiptPage extends StatefulWidget {
 }
 /// This is a widget to create a new receipt
 class _NewReceiptPageState extends State<NewReceiptPage> {
-  List<String> _categories = ['Last Week', 'Last Month', 'Current Week', 'Current Month'];
-  String _selectedCategory = 'Last Week';
-  // @Todo replace these with values from a receipt object
-  var items = [
-    LineItem(name: "Item 1", price: 10.00),
-    LineItem(name: "Item 2", price: 15.00),
-    LineItem(name: "Item 3", price: 5.00),
-    LineItem(name: "Item 4", price: 2.50),
-  ];
-  var TPS = 0.00;
-  var TVP = 0.00;
+  //To populate with default items
+  Categories category = Categories.Other;
+  Receipt receipt = new Receipt(
+    date: DateTime.now(),
+    category:Categories.Other,
+    name : "New Receipt",
+    tps: 0,
+    tvp:0,
+    total:0,
+    items: [
+      LineItem(name: "Item 1", price: 10.00),
+      LineItem(name: "Item 2", price: 15.00),
+      LineItem(name: "Item 3", price: 5.00),
+      LineItem(name: "Item 4", price: 2.50),
+    ]
+  );
   @override
   Widget build(BuildContext context) {
     {
@@ -30,7 +35,11 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.indigo,
-          child: const Icon(Icons.check), onPressed: () {},),
+          child: const Icon(Icons.check), onPressed: () {
+            receipt.category = category;
+            globals.receipts.add(receipt);
+            Navigator.pop(context);
+        },),
         bottomNavigationBar: FiscoBottomBar(
           children: <Widget>[
             IconButton(icon: Icon(Icons.arrow_back),
@@ -65,42 +74,57 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                     ),
                                     SizedBox(
                                       height:50,
-                                      child: TextField(
+                                      child: TextFormField(
+                                        onChanged: (text) {
+                                          receipt.name = text;
+                                        },
                                         decoration: InputDecoration(
                                             border: UnderlineInputBorder(),
                                             hintText: 'Name'
                                         ),
+
                                       ),
                                     ),
                                     SizedBox(
-                                      height:50,
+                                      height:75,
                                       child:Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Expanded(
-                                              child:TextField(
+                                              flex:5,
+                                              child:TextFormField(
+                                                keyboardType: TextInputType.number,
                                                 decoration: InputDecoration(
                                                     border: UnderlineInputBorder(),
-                                                    hintText: 'Date'
+                                                    labelText: 'Date',
+                                                    hintText: 'YYYY/MM/DD'
                                                 ),
+                                                initialValue: DateFormat('yyyy/MM/dd').format(receipt.date),
+                                                onChanged: (text) {
+                                                  receipt.date = DateFormat("YYYY/MM/DD").parse(text);
+                                                },
+                                                  inputFormatters: [
+                                                    LengthLimitingTextInputFormatter(10),
+                                                  ]
                                               ),
                                             ),
                                             Expanded(
+                                              flex:5,
                                               child: Container (
                                                 padding: EdgeInsets.symmetric(horizontal: 10.0),
 
-                                                child:DropdownButton(
+                                                child:DropdownButton<Categories>(
                                                   hint: Text(""),
-                                                  value: _selectedCategory,
-                                                  onChanged: (newValue) {
+                                                  value: category,
+                                                  onChanged: (Categories newValue) {
                                                     setState(() {
-                                                      _selectedCategory = newValue;
+                                                      category = newValue;
                                                     });
                                                   },
-                                                  items: _categories.map((location) {
-                                                    return DropdownMenuItem(
-                                                      child: new Text(location),
+                                                  items:Categories.values.map((Categories location) {
+                                                    return DropdownMenuItem <Categories>(
+                                                      child: Text(location.toString().split('.').last),
                                                       value: location,
                                                     );
                                                   }).toList(),
@@ -111,7 +135,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height:50,
+                                      height:75,
                                       child:TextField(
                                         decoration: InputDecoration(
                                             border: UnderlineInputBorder(),
@@ -133,7 +157,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                       ),
                       child:Column(
                         children: [
-                          for(var item in items)
+                          for(var item in receipt.items)
                             IntrinsicHeight(
                               child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +191,9 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                       keyboardType: TextInputType.number,
                                       initialValue: item.price.toString(),
                                       onChanged: (text) {
-                                        item.price = double.parse(text);
+                                        setState(() {
+                                          item.price = double.parse(text);
+                                        });
                                       },
                                       decoration: InputDecoration(
                                           border: UnderlineInputBorder(),
@@ -201,7 +227,11 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                       child: IconButton(
                                         icon: Icon(Icons.close),
                                         color: Colors.white,
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            receipt.items.remove(item);
+                                          });
+                                        },
                                       ),
                                     )
                                   ),
@@ -220,7 +250,11 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                   child: IconButton(
                                     icon: Icon(Icons.add),
                                     color: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        receipt.items.add(LineItem(name: "Item " + (receipt.items.length + 1).toString(), price: 0));
+                                      });
+                                    },
                                   ),
                                 )
                             ),
@@ -251,9 +285,11 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                             alignment: Alignment.topCenter,
                                             child:TextFormField (
                                               keyboardType: TextInputType.number,
-                                              initialValue: TPS.toString(),
+                                              initialValue: receipt.tps.toString(),
                                               onChanged: (text) {
-                                                TPS = double.parse(text);
+                                                setState(() {
+                                                  receipt.tps = double.parse(text);
+                                                });
                                               },
                                               decoration: InputDecoration(
                                                   border: UnderlineInputBorder(),
@@ -287,9 +323,11 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                                 alignment: Alignment.topCenter,
                                                 child:TextFormField (
                                                   keyboardType: TextInputType.number,
-                                                  initialValue: TPS.toString(),
+                                                  initialValue: receipt.tvp.toString(),
                                                   onChanged: (text) {
-                                                    TVP = double.parse(text);
+                                                    setState(() {
+                                                      receipt.tvp = double.parse(text);
+                                                    });
                                                   },
                                                   decoration: InputDecoration(
                                                       border: UnderlineInputBorder(),
@@ -329,7 +367,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                                   ),
                                 ),
                                 Text(
-                                  _computeTotal().toString() + " \$",
+                                  _computeTotal(receipt, receipt.tps, receipt.tvp).toString() + " \$",
                                   style: TextStyle(
                                       fontSize: 30.0,
                                       fontWeight: FontWeight.bold,
@@ -349,11 +387,12 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
       );
     }
   }
-  double _computeTotal () {
-    double total =0;
-    for(var item in items)
+  double _computeTotal (Receipt receipt, double tps, double tvp) {
+    double total = 0;
+    for(var item in receipt.items)
       total+= item.price;
-    total+= TPS + TVP;
+    total+= tps + tvp;
+    receipt.total = total;
     return total;
 
   }
