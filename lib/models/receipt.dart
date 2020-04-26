@@ -10,7 +10,7 @@ enum Categories {
 class Receipt implements Model {
   double tps = 0, tvp = 0, total = 0;
   Categories category = Categories.Other;
-
+  String name = "";
   //optional
   File picture;
   String merchant;
@@ -27,6 +27,7 @@ class Receipt implements Model {
   Receipt({
     this.picture,
     this.merchant,
+    this.name,
     this.category,
     this.date,
     this.tps,
@@ -43,6 +44,7 @@ class Receipt implements Model {
     return {
       'picture': picture?.path,
       'merchant': merchant,
+      'name' : name,
       'category': EnumToString.parse(category),
       'date': date.toString(),
       'tps': tps,
@@ -57,6 +59,7 @@ class Receipt implements Model {
     return new Receipt(
         picture: json['picture'] != null ? File(json['picture']) : null,
         merchant: json['merchant'],
+        name: json['name'] ?? "",
         category: EnumToString.fromString(Categories.values, json['category']),
         date: DateTime.parse(json['date']),
         tps: json['tps'] ?? 0,
@@ -69,12 +72,13 @@ class Receipt implements Model {
 
   factory Receipt.fromFile(
       File picture,
-      {category, date, tps, tvp, total, items}
+      {name, category, date, tps, tvp, total, items}
     )
   {
     //TODO: RUN OCR & PARSE IMAGE INTO RECEIPT HERE
 
     return new Receipt(
+        name: name,
         category: category,
         date: date,
         tps: tps,
