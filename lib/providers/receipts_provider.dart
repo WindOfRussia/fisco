@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
+import '../services/storage_service.dart';
 import '../services/logger_service.dart';
 import '../models/receipt.dart';
 
@@ -33,4 +34,14 @@ class ReceiptsProvider extends ChangeNotifier {
   void _exampleSeed() {
     receipts = globals.receipts;
   }
+
+/* Wasted enough time already, just ignore these
+  void syncToStorage() {
+    Storage.store('receipts', receipts);
+  }
+
+  List<Receipt> syncFromStorage() {
+    return Storage.retrieve('receipts');
+  }
+*/
 }
