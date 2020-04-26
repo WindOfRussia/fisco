@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
+import '../providers/receipts_provider.dart';
+import 'package:provider/provider.dart';
 import '../widgets/fisco_bottom_bar.dart';
 import '../models/line_item.dart';
 import '../models/receipt.dart';
@@ -31,13 +33,14 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
   @override
   Widget build(BuildContext context) {
     {
+      var receipts = Provider.of<ReceiptsProvider>(context, listen:false).receipts;
       return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.indigo,
           child: const Icon(Icons.check), onPressed: () {
             receipt.category = category;
-            globals.receipts.add(receipt);
+            receipts.add(receipt);
             Navigator.pop(context);
         },),
         bottomNavigationBar: FiscoBottomBar(
