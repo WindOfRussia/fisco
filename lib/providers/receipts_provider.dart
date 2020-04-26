@@ -36,11 +36,13 @@ class ReceiptsProvider extends ChangeNotifier {
 
   void addReceipt(Receipt receipt) {
     receipts.add(receipt);
+    analysisService.receipts = receipts;
     notifyListeners();
   }
 
   void removeReceipt(Receipt receipt) {
     receipts.remove(receipt);
+    analysisService.receipts = receipts;
     notifyListeners();
   }
 
