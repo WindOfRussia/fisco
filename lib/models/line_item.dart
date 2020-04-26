@@ -14,7 +14,7 @@ class LineItem implements Model {
   factory LineItem.fromJson(Map<String, dynamic> json) {
     return new LineItem(
       name: json['name'],
-      price: json['tps'] ?? 0,
+      price: json['price'] ?? 0,
     );
   }
 

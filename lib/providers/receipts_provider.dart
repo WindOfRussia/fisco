@@ -1,3 +1,4 @@
+import 'package:fiscoapp/services/analysis_service.dart';
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 import '../services/storage_service.dart';
@@ -11,8 +12,21 @@ class ReceiptsProvider extends ChangeNotifier {
 
   set receipts(List<Receipt> receipts) {
     _receipts = receipts;
+    analysisService.receipts = receipts;
     Logger.log('receipts updated', object: receipts, level: 1000);
     notifyListeners();  // triggers rebuilt of all listening widgets
+  }
+
+  // Data Visualisation Service
+  AnalysisService analysisService = AnalysisService();
+
+  get pieChartData => analysisService.pieChartData;
+  get barChartData => analysisService.barChartData;
+
+  get selectedDataInterval => analysisService.selectedDataInterval;
+  set selectedDataInterval(String selectedDataInterval) {
+    analysisService.selectedDataInterval = selectedDataInterval;
+    notifyListeners();
   }
 
   /// Initialize Provider
