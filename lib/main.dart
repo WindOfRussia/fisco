@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/receipts_provider.dart';
+import 'providers/ocr_provider.dart';
 import 'screens/analysis_page.dart';
 import 'screens/manage_receipts_page.dart';
 import 'screens/new_receipt_page.dart';
@@ -13,6 +14,9 @@ void main() {
     providers: [
       ChangeNotifierProvider<ReceiptsProvider>(
         create: (context) => ReceiptsProvider(),
+      ),
+      ChangeNotifierProvider<OcrProvider>(
+        create: (context) => OcrProvider(),
       ),
     ],
     child: Fisco(),
@@ -35,9 +39,14 @@ class Fisco extends StatelessWidget {
         '/new': (context) => NewReceiptPage(),
         '/manage': (context) => ManageReceiptsPage(),
         '/edit': (context) => EditReceiptPage(),
-        '/picture': (context) => DisplayPictureScreen(
-            image: ModalRoute.of(context).settings.arguments
-        ),
+        '/picture': (context) {
+          var picture = ModalRoute.of(context).settings.arguments;
+
+          // Access provider instance in stateless widget, run image scan
+          Provider.of<OcrProvider>(context, listen: false).scanImage(picture);
+
+          return DisplayPictureScreen(image: picture);
+        }
       },
       debugShowCheckedModeBanner: false,
     );
