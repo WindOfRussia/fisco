@@ -12,22 +12,29 @@ class Receipt implements Model {
   Categories category = Categories.Other;
   String name = "";
   //optional
+  File picture;
+  String merchant;
+  String note;
   DateTime date = new DateTime.now();
   List<LineItem> items = [];
-  File picture;
-  String note;
+
+  get itemCount => items.length;
+
+  String get categoryText => EnumToString.parse(category);
 
 
   // Making all fields optional on create to account for ocr issues
   Receipt({
     this.picture,
+    this.merchant,
     this.name,
     this.category,
     this.date,
     this.tps,
     this.tvp,
     this.total,
-    this.items,
+    this.note,
+    this.items
   });
 
   Map toJson() {
@@ -36,12 +43,14 @@ class Receipt implements Model {
 
     return {
       'picture': picture?.path,
+      'merchant': merchant,
       'name' : name,
       'category': EnumToString.parse(category),
       'date': date.toString(),
       'tps': tps,
       'tvp': tvp,
       'total': total,
+      'note': note,
       'items': items,
     };
   }
@@ -49,12 +58,14 @@ class Receipt implements Model {
   factory Receipt.fromJson(Map<String, dynamic> json) {
     return new Receipt(
         picture: json['picture'] != null ? File(json['picture']) : null,
+        merchant: json['merchant'],
         name: json['name'] ?? "",
         category: EnumToString.fromString(Categories.values, json['category']),
         date: DateTime.parse(json['date']),
         tps: json['tps'] ?? 0,
         tvp: json['tvp'] ?? 0,
         total: json['total'] ?? 0,
+        note: json['note'],
         items: json['items'].map((value) => new LineItem.fromJson(value)).toList()
     );
   }
@@ -75,6 +86,27 @@ class Receipt implements Model {
         total: total,
         items: items,
     );
+  }
+
+  static List<Receipt> filterByDate(List<Receipt> receipts, {DateTime start, DateTime end}) {
+    var it = receipts.iterator;
+    List<Receipt> filteredData = [];
+    while (it.moveNext()) {
+      if (end != null && start != null) {
+        if (it.current.date.compareTo(start) >= 0 && it.current.date.compareTo(end) <= 0) {
+          filteredData.add(it.current);
+        }
+      } else if (start != null && end == null) {
+        if (it.current.date.compareTo(start) >= 0) {
+          filteredData.add(it.current);
+        }
+      } else if (end != null && start == null) {
+        if (it.current.date.compareTo(end) <= 0) {
+          filteredData.add(it.current);
+        }
+      }
+    }
+    return filteredData;
   }
 
 }
