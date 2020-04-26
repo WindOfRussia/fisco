@@ -1,40 +1,15 @@
 library fisco_app.globals;
+import './models/receipt.dart';
 
-Receipt tempReceipt;
-
-var receipts = [];
-var lastWeekDataSet = [
-  LastWeekCategoryVsExpense("Groceries", 100.00),
-  LastWeekCategoryVsExpense("Restaurants", 50.00),
-  LastWeekCategoryVsExpense("Clothes", 150.00),
-  LastWeekCategoryVsExpense("Others", 200.00),
+var receipts = [
+  Receipt(category: Categories.Clothes, total: 100.00, date: new DateTime(2020,04,25)),
+  Receipt(category: Categories.Groceries, total: 200.00, date: new DateTime(2020,04,25)),
+  Receipt(category: Categories.Clothes, total: 100.00, date: new DateTime(2020,04,18)),
+  Receipt(category: Categories.Groceries, total: 300.00, date: new DateTime(2020,04,18)),
+  Receipt(category: Categories.Other, total: 250.00, date: new DateTime(2020,04,18)),
+  Receipt(category: Categories.Restaurants, total: 200.00, date: new DateTime(2020,04,19)),
+  Receipt(category: Categories.Clothes, total: 200.00, date: new DateTime(2020,04,19)),
+  Receipt(category: Categories.Other, total: 250.00, date: new DateTime(2020,04,19)),
+  Receipt(category: Categories.Other, total: 100.00, date: new DateTime(2020,03,29)),
+  Receipt(category: Categories.Clothes, total: 100.00, date: new DateTime(2020,03,29)),
 ];
-
-var lastMonthDataSet = [
-  LastWeekCategoryVsExpense("Groceries", 300.00),
-  LastWeekCategoryVsExpense("Restaurants", 300.00),
-  LastWeekCategoryVsExpense("Clothes", 250.00),
-  LastWeekCategoryVsExpense("Others", 500.00),
-];
-
-class LastWeekCategoryVsExpense {
-  final String category;
-  final double expense;
-
-  LastWeekCategoryVsExpense(this.category, this.expense);
-}
-
-class Receipt {
-  String file = "";
-  String category = "Others";
-  var date = new DateTime.now();
-  double TPS = 0, TVP = 0, total = 0;
-  List<Item> items = [];
-
-  Receipt(this.file, this.category,this.date, this.TPS, this.TVP, this.total, this.items);
-
-}
-class Item {
-  String name;
-  double price;
-}
