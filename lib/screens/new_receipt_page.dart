@@ -33,7 +33,10 @@ class NewReceiptPage extends StatelessWidget {
           children: <Widget>[
             IconButton(
                 icon: Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pop(context)),
+                onPressed: () {
+                  actions.closeReceipt();
+                  Navigator.pop(context);
+                }),
           ],
         ),
         body: SingleChildScrollView(

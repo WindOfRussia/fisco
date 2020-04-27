@@ -1,24 +1,19 @@
-import 'package:fiscoapp/models/receipt.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../globals.dart' as globals;
 import '../providers/receipts_provider.dart';
 import '../widgets/fisco_bottom_bar.dart';
 import '../widgets/buttons/camera_button.dart';
-import 'package:intl/intl.dart';
 
-class ManageReceiptsPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _ManageReceiptsPageState();
-}
-
-class _ManageReceiptsPageState extends State<ManageReceiptsPage> {
+class ManageReceiptsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     {
       // basic example of retrieving items from global state
       // @TODO: Change to use filtered receipts
       var receipts = Provider.of<ReceiptsProvider>(context).receipts;
+
+      var actions = Provider.of<ReceiptsProvider>(context, listen: false);
 
       return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -59,8 +54,7 @@ class _ManageReceiptsPageState extends State<ManageReceiptsPage> {
                     hint: Text('Please choose a data interval'),
                     value: Provider.of<ReceiptsProvider>(context).selectedDataInterval, // any time selected attribute is updated, the dropdown button widget will rebuild
                     onChanged: (value) {
-                      Provider.of<ReceiptsProvider>(context, listen: false). // passing false means we don't want to refresh the widget if this next call ever uses notifyListeners
-                      selectedDataInterval = value; // normally setters should specify listen false and let the corresponding getters refresh the widget... avoids endless loops
+                      actions.selectedDataInterval = value;
                     },
                     // @TODO: Change to use manageService
                     items: Provider.of<ReceiptsProvider>(context).analysisService.dataInterval.map((item) {
@@ -110,7 +104,7 @@ class _ManageReceiptsPageState extends State<ManageReceiptsPage> {
                                   padding: EdgeInsets.all(8.0),
                                   splashColor: Colors.blueAccent,
                                   onPressed: () {
-                                    //@TODO Edit the current receipt (receipt[i])
+                                    actions.openReceipt(index: i);
                                     Navigator.pushNamed(context, '/edit');
                                   },
                                   child: Text(
@@ -124,9 +118,7 @@ class _ManageReceiptsPageState extends State<ManageReceiptsPage> {
                                   padding: EdgeInsets.all(8.0),
                                   splashColor: Colors.redAccent,
                                   onPressed: () {
-                                    setState(() {
-                                      receipts.remove(receipts[i]);
-                                    });
+                                    actions.removeReceiptAt(i);
                                   },
                                   child: Text(
                                     "Delete",
