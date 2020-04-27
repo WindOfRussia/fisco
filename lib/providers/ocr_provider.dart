@@ -18,6 +18,14 @@ class OcrProvider extends ChangeNotifier {
 
   /// Parse images into text
   void scanImage(File image) {
+    // TODO: run LOTS of image pre-processing:
+    //  greyscale, auto-crop, filters (highlight, sharpen, etc.), compensate for angle
+
+
+    // TODO: chunk image into lines and run ocr line by line for better accuracy
+
+
+
     _ocr.scanImage(image).then((value) {
       Logger.log('image scan complete');
       extractedText = value;

@@ -22,6 +22,23 @@ class Receipt implements Model {
 
   String get categoryText => EnumToString.parse(category);
 
+  double get computeTotal {
+    double computed = 0;
+    if (items != null) {
+      for (var item in items) computed += item.price;
+    }
+    if (tps != null) {
+      computed += tps;
+    }
+    if (tvp != null) {
+      computed += tvp;
+    }
+    if (total == null || total < computed) {
+      total = computed;
+    }
+    return computed;
+  }
+
 
   // Making all fields optional on create to account for ocr issues
   Receipt({
@@ -86,6 +103,22 @@ class Receipt implements Model {
         total: total,
         items: items,
     );
+  }
+
+    factory Receipt.example() {
+      return Receipt(
+        date: DateTime.now(),
+        category:Categories.Other,
+        name : "New Receipt",
+        tps: 0.0,
+        tvp: 0.0,
+        items: [
+          LineItem(name: "Item 1", price: 10.00),
+          LineItem(name: "Item 2", price: 15.00),
+          LineItem(name: "Item 3", price: 5.00),
+          LineItem(name: "Item 4", price: 2.50),
+        ]
+      );
   }
 
   static List<Receipt> filterByDate(List<Receipt> receipts, {DateTime start, DateTime end}) {
