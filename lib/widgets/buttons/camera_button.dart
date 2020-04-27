@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import '../../providers/ocr_provider.dart';
 
 class CameraButton extends StatelessWidget {
   @override
@@ -14,6 +16,7 @@ class CameraButton extends StatelessWidget {
 
   Future<void> open(context, ImageSource source) async {
     var picture = await ImagePicker.pickImage(source: source);
+    Provider.of<OcrProvider>(context, listen: false).scanImage(picture);
     Navigator.popAndPushNamed(context, '/picture', arguments: picture);
   }
 

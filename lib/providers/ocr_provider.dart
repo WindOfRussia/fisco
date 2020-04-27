@@ -12,6 +12,19 @@ class OcrProvider extends ChangeNotifier {
 
   String get extractedText => _extractedText;
 
+  String get _demo =>
+      json.encode({
+        'merchant': 'Boston Pizza',
+        'name': 'BP',
+        'date': "2017-09-14",
+        'tps': 0.80,
+        'tvp': 1.59,
+        'items': [
+          {'name': 'Ceasar Classique', 'price': 6.99},
+          {'name': 'G-BBQ Poulet', 'price': 8.99},
+        ],
+      });
+
   set extractedText(String text) {
     _extractedText = text;
     notifyListeners(); // trigger widget rebuild
@@ -29,18 +42,7 @@ class OcrProvider extends ChangeNotifier {
 
     _ocr.scanImage(image).then((value) {
       Logger.log('image scan complete');
-      //extractedText = value;
-      extractedText = json.encode({
-        'merchant': 'Boston Pizza',
-        'name': 'BP',
-        'date': "2017-09-14",
-        'tps': 0.80,
-        'tvp': 1.59,
-        'items': [
-          {'name': 'Ceasar Classique', 'price': 6.99},
-          {'name': 'G-BBQ Poulet', 'price': 8.99},
-        ],
-      });
+      extractedText = _demo + "\n\n" + value;
     });
   }
 
@@ -50,7 +52,7 @@ class OcrProvider extends ChangeNotifier {
   }
 
   Receipt parseExtractedText() {
-    return Receipt.fromJson(jsonDecode(extractedText));
+    return Receipt.fromJson(jsonDecode(_demo));
   }
 }
 

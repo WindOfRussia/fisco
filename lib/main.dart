@@ -41,10 +41,6 @@ class Fisco extends StatelessWidget {
         '/edit': (context) => EditReceiptPage(),
         '/picture': (context) {
           var picture = ModalRoute.of(context).settings.arguments;
-
-          // Access provider instance in stateless widget, run image scan
-          Provider.of<OcrProvider>(context, listen: false).scanImage(picture);
-
           return DisplayPictureScreen(image: picture);
         }
       },

@@ -21,31 +21,43 @@ class DisplayPictureScreen extends StatelessWidget {
     var receiptsActions = Provider.of<ReceiptsProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.indigo,
-          child: const Icon(Icons.check),
+          child: const Icon(Icons.refresh),
           onPressed: () {
-            receiptsActions.openReceipt(receipt: ocrActions.parseExtractedText());
-            Navigator.popAndPushNamed(context, '/new');
+            ocrActions.scanImage(image);
           }
       ),
-      bottomNavigationBar: FiscoBottomBar(),
-      body: (image == null) ? Text('No Image to display') :
-      Stack(
+      bottomNavigationBar: FiscoBottomBar(
         children: [
-          Image.file(image),
-          Container(
-            child: Align(
-              child: Consumer<OcrProvider>( // another way of using providers
-                builder: (_, ocr, child) {
-                  return Text(ocr?.extractedText ?? 'Processing....');
-                },
-              ),
-            ),
+          IconButton(icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context)
+          ),
+          IconButton(icon: Icon(Icons.check),
+              onPressed: () {
+                receiptsActions.openReceipt(receipt: ocrActions.parseExtractedText());
+                Navigator.popAndPushNamed(context, '/new');
+              }
           ),
         ],
+      ),
+      body: (image == null) ? Text('No Image to display') :
+      SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.file(image),
+            Padding(
+              padding: EdgeInsets.fromLTRB(15, 20, 15, 25),
+              child: Align(
+                child: Consumer<OcrProvider>( // another way of using providers
+                  builder: (_, ocr, child) {
+                    return Text(ocr?.extractedText ?? 'Processing....');
+                  })
+              )
+            ),
+          ]
+        ),
       ),
     );
   }
