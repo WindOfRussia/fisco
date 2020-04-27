@@ -324,7 +324,7 @@ class NewReceiptPage extends StatelessWidget {
                               color: Colors.grey,
                             ),
                           ),
-                          Text(receipt.computeTotal.toString() + " \$",
+                          Text(receipt.total.toString() + " \$",
                             style: TextStyle(
                               fontSize: 30.0,
                               fontWeight: FontWeight.bold,

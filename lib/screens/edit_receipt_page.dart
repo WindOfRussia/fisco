@@ -68,6 +68,7 @@ class EditReceiptPage extends StatelessWidget {
                                 SizedBox(
                                   height: 50,
                                   child: TextFormField(
+                                    initialValue: receipt.name,
                                     onChanged: (text) {
                                       receipt.name = text;
                                       actions.updateOpenReceipt(receipt);
@@ -326,7 +327,7 @@ class EditReceiptPage extends StatelessWidget {
                                   color: Colors.grey,
                                 ),
                               ),
-                              Text(receipt.computeTotal.toString() + " \$",
+                              Text(receipt.total.toString() + " \$",
                                 style: TextStyle(
                                   fontSize: 30.0,
                                   fontWeight: FontWeight.bold,

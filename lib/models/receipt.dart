@@ -8,7 +8,7 @@ enum Categories {
 }
 
 class Receipt implements Model {
-  double tps = 0, tvp = 0, total = 0;
+  double _tps, _tvp, _total;
   Categories category = Categories.Other;
   String name = "";
   //optional
@@ -16,28 +16,51 @@ class Receipt implements Model {
   String merchant;
   String note;
   DateTime date = new DateTime.now();
-  List<LineItem> items = [];
+  List<LineItem> items = [
+    LineItem(name: "Chicken Tenders", price: 10.99)
+  ];
 
   get itemCount => items.length;
 
-  String get categoryText => EnumToString.parse(category);
+  set tps(double value) => _tps = value;
+  set tvp(double value) => _tvp = value;
 
-  double get computeTotal {
+  get tps {
+    var computed = subtotal * 0.05;
+    if (_tps == null || _tps == 0) {
+      return num.parse(computed.toStringAsFixed(2));
+    }
+    return _tps;
+  }
+
+  get tvp {
+    var computed = subtotal * 0.09975;
+    if (_tvp == null || _tvp == 0) {
+      return num.parse(computed.toStringAsFixed(2));
+    }
+    return _tvp;
+  }
+
+  get subtotal {
     double computed = 0;
     if (items != null) {
       for (var item in items) computed += item.price;
     }
+    return num.parse(computed.toStringAsFixed(2));
+  }
+
+  get total {
+    double computed = subtotal;
     if (tps != null) {
       computed += tps;
     }
     if (tvp != null) {
       computed += tvp;
     }
-    if (total == null || total < computed) {
-      total = computed;
-    }
-    return computed;
+    return num.parse(computed.toStringAsFixed(2));
   }
+
+  String get categoryText => EnumToString.parse(category);
 
 
   // Making all fields optional on create to account for ocr issues
@@ -47,12 +70,14 @@ class Receipt implements Model {
     this.name,
     this.category,
     this.date,
-    this.tps,
-    this.tvp,
-    this.total,
+    tps,
+    tvp,
     this.note,
     this.items
-  });
+  }) {
+    this.tps = tps;
+    this.tvp = tvp;
+  }
 
   Map toJson() {
     List<Map> items =
@@ -66,6 +91,7 @@ class Receipt implements Model {
       'date': date.toString(),
       'tps': tps,
       'tvp': tvp,
+      'subtotal': subtotal,
       'total': total,
       'note': note,
       'items': items,
@@ -79,9 +105,6 @@ class Receipt implements Model {
         name: json['name'] ?? "",
         category: EnumToString.fromString(Categories.values, json['category']),
         date: DateTime.parse(json['date']),
-        tps: json['tps'] ?? 0,
-        tvp: json['tvp'] ?? 0,
-        total: json['total'] ?? 0,
         note: json['note'],
         items: json['items'].map((value) => new LineItem.fromJson(value)).toList()
     );
@@ -89,7 +112,7 @@ class Receipt implements Model {
 
   factory Receipt.fromFile(
       File picture,
-      {name, category, date, tps, tvp, total, items}
+      {name, category, date, items}
     )
   {
     //TODO: RUN OCR & PARSE IMAGE INTO RECEIPT HERE
@@ -98,9 +121,6 @@ class Receipt implements Model {
         name: name,
         category: category,
         date: date,
-        tps: tps,
-        tvp: tvp,
-        total: total,
         items: items,
     );
   }
@@ -110,8 +130,6 @@ class Receipt implements Model {
         date: DateTime.now(),
         category:Categories.Other,
         name : "New Receipt",
-        tps: 0.0,
-        tvp: 0.0,
         items: [
           LineItem(name: "Item 1", price: 10.00),
           LineItem(name: "Item 2", price: 15.00),
