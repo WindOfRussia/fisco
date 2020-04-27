@@ -13,7 +13,11 @@ class Storage {
   static Future<List> retrieve(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Logger.log("retrieving $key from storage...");
-    return jsonDecode(prefs.getString(key));
+    var json = prefs.getString(key);
+    if (json != null) {
+      return jsonDecode(json);
+    }
+    return [];
   }
 
   /// Serializes objects into json
