@@ -50,7 +50,7 @@ class AnalysisPage extends StatelessWidget {
                   child: charts.PieChart(
                     provider.pieChartData,
                     animate: true,
-                    behaviors: [
+                    behaviors: provider.pieChartData == null ? [] : [
                       new charts.DatumLegend(position: charts.BehaviorPosition.end)
                     ],
                   ),

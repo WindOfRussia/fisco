@@ -10,7 +10,7 @@ class TesseractService implements OcrService {
 
   Future<String> scanImage(File image) async {
     try {
-      lastExtracted = await TesseractOcr.extractText(image.path, language: 'fra');
+      lastExtracted = await TesseractOcr.extractText(image?.path, language: 'eng+fra');
       Logger.log('tesseract scan complete', object: lastExtracted);
     } on PlatformException {
       Logger.log('tesseract scan failed', object: PlatformException);

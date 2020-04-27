@@ -13,8 +13,7 @@ class CameraButton extends StatelessWidget {
 
   Future<void> open(context, ImageSource source) async {
     var picture = await ImagePicker.pickImage(source: source);
-    Navigator.pushNamed(context, '/picture', arguments: picture).
-      whenComplete(() => Navigator.pop(context)); //dismiss alert
+    Navigator.popAndPushNamed(context, '/picture', arguments: picture);
   }
 
   Future<void> _optionsDialogBox(context) {

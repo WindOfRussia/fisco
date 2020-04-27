@@ -10,11 +10,10 @@ class Storage {
 
   /// Retrieve objects from storage and deserialize
   /// warning: objects and nested attributes need to implement fromJson
-  static dynamic retrieve(String key) async {
+  static Future<List> retrieve(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Logger.log("retrieving $key from storage");
-    var json = prefs.getString(key);
-    return jsonDecode(json);
+    Logger.log("retrieving $key from storage...");
+    return jsonDecode(prefs.getString(key));
   }
 
   /// Serializes objects into json
@@ -22,7 +21,7 @@ class Storage {
   ///          support json as well
   static Future<bool> store(String key, Object obj) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Logger.log("adding $key to storage", object: obj);
+    Logger.log("adding $key to storage...", object: obj);
     return prefs.setString(key, jsonEncode(obj));
   }
 

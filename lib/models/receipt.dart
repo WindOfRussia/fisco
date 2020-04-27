@@ -99,15 +99,19 @@ class Receipt implements Model {
   }
 
   factory Receipt.fromJson(Map<String, dynamic> json) {
-    return new Receipt(
+    List items = json['items'].map((value) => new LineItem.fromJson(value)).toList();
+    var receipt = new Receipt(
         picture: json['picture'] != null ? File(json['picture']) : null,
         merchant: json['merchant'],
         name: json['name'] ?? "",
         category: EnumToString.fromString(Categories.values, json['category']),
         date: DateTime.parse(json['date']),
         note: json['note'],
-        items: json['items'].map((value) => new LineItem.fromJson(value)).toList()
+        tps: json['tps'],
+        tvp: json['tvp'],
+        items: items.cast<LineItem>(),
     );
+    return receipt;
   }
 
   factory Receipt.fromFile(

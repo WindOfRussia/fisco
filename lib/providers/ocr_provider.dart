@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/receipt.dart';
@@ -17,7 +18,7 @@ class OcrProvider extends ChangeNotifier {
   }
 
   /// Parse images into text
-  void scanImage(File image) {
+  void scanImage(File image) async {
     // TODO: run LOTS of image pre-processing:
     //  greyscale, auto-crop, filters (highlight, sharpen, etc.), compensate for angle
 
@@ -28,13 +29,28 @@ class OcrProvider extends ChangeNotifier {
 
     _ocr.scanImage(image).then((value) {
       Logger.log('image scan complete');
-      extractedText = value;
+      //extractedText = value;
+      extractedText = json.encode({
+        'merchant': 'Boston Pizza',
+        'name': 'BP',
+        'date': "2017-09-14",
+        'tps': 0.80,
+        'tvp': 1.59,
+        'items': [
+          {'name': 'Ceasar Classique', 'price': 6.99},
+          {'name': 'G-BBQ Poulet', 'price': 8.99},
+        ],
+      });
     });
   }
 
   /// Parse receipt pictures into text
   void scanReceipt(Receipt receipt) {
     return scanImage(receipt.picture);
+  }
+
+  Receipt parseExtractedText() {
+    return Receipt.fromJson(jsonDecode(extractedText));
   }
 }
 

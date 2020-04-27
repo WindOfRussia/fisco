@@ -18,7 +18,7 @@ class FiscoBottomBar extends StatelessWidget {
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: children
+        children: children ?? []
       ),
     );
   }

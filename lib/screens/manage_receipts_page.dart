@@ -24,7 +24,7 @@ class ManageReceiptsPage extends StatelessWidget {
               onPressed: () => Navigator.pop(context)
             ),
             IconButton(icon: Icon(Icons.add),
-              onPressed: () => Navigator.pushNamed(context, '/new')
+              onPressed: () => Navigator.popAndPushNamed(context, '/new')
             ),
           ],
         ),

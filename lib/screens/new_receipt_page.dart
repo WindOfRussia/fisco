@@ -66,6 +66,7 @@ class NewReceiptPage extends StatelessWidget {
                             SizedBox(
                               height: 50,
                               child: TextFormField(
+                                initialValue: receipt.name,
                                 onChanged: (text) {
                                   receipt.name = text;
                                   actions.updateOpenReceipt(receipt);

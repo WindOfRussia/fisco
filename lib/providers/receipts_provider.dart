@@ -13,7 +13,8 @@ class ReceiptsProvider extends ChangeNotifier {
   set receipts(List<Receipt> receipts) {
     _receipts = receipts;
     analysisService.receipts = receipts;
-    Logger.log('receipts updated', object: receipts, level: 1000);
+    Logger.log('receipts updated');
+    syncToStorage();
     notifyListeners();  // triggers rebuilt of all listening widgets
   }
 
@@ -41,7 +42,7 @@ class ReceiptsProvider extends ChangeNotifier {
 
   /// Initialize Provider
   ReceiptsProvider() {
-    _exampleSeed(); // or in this case just dump some random data into receipts
+    syncFromStorage();
   }
 
   /// Edit an existing receipt or open a new one
@@ -83,39 +84,42 @@ class ReceiptsProvider extends ChangeNotifier {
   void closeReceipt() {
     _currentReceipt = null;
     _editIndex = null;
+    syncToStorage();
     notifyListeners();
   }
 
   void addReceipt(Receipt receipt) {
     receipts.add(receipt);
     analysisService.receipts = receipts;
+    syncToStorage();
     notifyListeners();
   }
 
   void removeReceipt(Receipt receipt) {
     receipts.remove(receipt);
     analysisService.receipts = receipts;
+    syncToStorage();
     notifyListeners();
   }
 
   void removeReceiptAt(int index) {
     receipts.removeAt(index);
     analysisService.receipts = receipts;
+    syncToStorage();
     notifyListeners();
   }
 
-  /// random data
-  void _exampleSeed() {
-    receipts = globals.receipts;
-  }
-
-/* Wasted enough time already, just ignore these
   void syncToStorage() {
     Storage.store('receipts', receipts);
   }
 
-  List<Receipt> syncFromStorage() {
-    return Storage.retrieve('receipts');
+  void syncFromStorage() {
+    Storage.retrieve('receipts').then((value) {
+      if(value == null || value.isEmpty == true) {
+        receipts = globals.receipts; // example data
+      } else {
+        receipts = value.map((e) => Receipt.fromJson(e)).toList();
+      }
+    });
   }
-*/
 }

@@ -62,13 +62,10 @@ class AnalysisService {
     return chartData(list, shades: shades);
   }
 
-  List<charts.Series<CategoryVsTotal, String>> chartData(List<CategoryVsTotal> dataSet, {shades: false}) {
+  List<charts.Series<CategoryVsTotal, String>> chartData(List<CategoryVsTotal> data, {shades: false}) {
     // build a chart id
     String id = "chart_${AnalysisService.chartCount}";
     AnalysisService.chartCount++;
-
-    // copy data to avoid modifying original
-    List<CategoryVsTotal> data = new List<CategoryVsTotal>.from(dataSet);
 
     // Sort data automatically by ascending order
     if(shades == true) {
